@@ -1,0 +1,5 @@
+torch>=2.1
+tiktoken>=0.7
+safetensors>=0.4
+matplotlib>=3.8
+datasets>=2.19

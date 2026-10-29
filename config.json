@@ -1,0 +1,10 @@
+{
+  "architecture": "GPT",
+  "block_size": 1024,
+  "vocab_size": 50257,
+  "n_layer": 12,
+  "n_head": 12,
+  "n_embd": 768,
+  "tokenizer": "gpt2",
+  "parameter_count": 124439808
+}

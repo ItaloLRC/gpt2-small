@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meu-gpt2-small"
+version = "0.1.0"
+description = "GPT-2 Small (124M) treinado do zero no FineWeb-Edu"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "tiktoken>=0.7",
+    "safetensors>=0.4",
+]
+
+[project.optional-dependencies]
+training = ["datasets>=2.19", "matplotlib>=3.8"]
+hub = ["transformers>=5.17"]
+
+[project.scripts]
+meu-gpt2-generate = "nano_gpt.generate:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

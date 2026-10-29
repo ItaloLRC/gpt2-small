@@ -1,0 +1,23 @@
+# Ambientes e caches Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Checkpoints e pesos: publicar no Hugging Face Hub, não no GitHub comum
+*.pt
+*.pth
+*.bin
+*.safetensors
+checkpoints/
+weights/*
+!weights/.gitkeep
+
+# Arquivos locais e segredos
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
