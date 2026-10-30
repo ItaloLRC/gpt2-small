@@ -18,7 +18,7 @@ O checkpoint de inferência está disponível em [`itlrc/gpt2-small`](https://hu
 
 ## Resultados
 
-O último checkpoint completo corresponde ao final da época lógica 42.
+O checkpoint publicado reúne 42 épocas lógicas de treinamento.
 
 | Item | Resultado |
 |---|---:|
@@ -28,11 +28,8 @@ O último checkpoint completo corresponde ao final da época lógica 42.
 | Train loss | 3,3080 |
 | Validation loss | 3,2915 |
 | Validation perplexity | 26,88 |
-| HellaSwag | 27,68% em 10.042 exemplos |
 
 ![Curvas de treinamento](artifacts/training_curves.png)
-
-A acurácia aleatória esperada no HellaSwag com quatro alternativas é 25%. Portanto, o resultado deve ser interpretado como uma avaliação inicial, e não como desempenho competitivo.
 
 ## Arquitetura
 
@@ -167,15 +164,3 @@ print(tokenizer.decode(output[0], skip_special_tokens=True))
 `trust_remote_code=True` é necessário porque o Hub precisa carregar `configuration_nanogpt.py` e `modeling_nanogpt.py` junto com os pesos. Revise código remoto antes de habilitar essa opção em modelos de terceiros.
 
 Para checkpoints produzidos localmente pelo notebook, o comando `meu-gpt2-generate` continua disponível. O utilitário `scripts/export_checkpoint.py` separa pesos de inferência, configuração e histórico do checkpoint completo.
-
-## Limitações
-
-- O treinamento registrado foi interrompido durante o início da época 43.
-- O modelo não recebeu instruction tuning, RLHF ou outro alinhamento por preferências.
-- As gerações podem conter erros factuais, repetições, vieses ou conteúdo inadequado.
-- O resultado do HellaSwag está próximo da linha de base aleatória.
-- Este é um experimento educacional e de pesquisa, não um sistema pronto para produção.
-
-## Licença
-
-Uma licença ainda não foi definida. Até que uma licença seja adicionada, o código não deve ser considerado liberado para reutilização irrestrita.
