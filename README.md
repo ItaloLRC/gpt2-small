@@ -1,61 +1,63 @@
-# GPT-2 Small (124M) treinado do zero
+# GPT-2 Small (124M) trained from scratch
 
-[![Modelo no Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-itlrc%2Fgpt2--small-yellow)](https://huggingface.co/itlrc/gpt2-small)
+English | [Português (Brasil)](README.pt-BR.md)
 
-Implementação e pipeline de treinamento de um modelo causal de linguagem com arquitetura equivalente ao GPT-2 Small. O modelo foi treinado do zero sobre o `sample-10BT` do FineWeb-Edu, usando o tokenizer GPT-2 do `tiktoken`.
+[![Model on Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-itlrc%2Fgpt2--small-yellow)](https://huggingface.co/itlrc/gpt2-small)
 
-Este repositório contém o pipeline, o código e as métricas do experimento. Os pesos treinados são distribuídos separadamente no [Hugging Face Hub](https://huggingface.co/itlrc/gpt2-small), evitando adicionar arquivos binários grandes ao histórico do Git.
+Implementation and training pipeline for a causal language model with an architecture equivalent to GPT-2 Small. The model was trained from scratch on FineWeb-Edu's `sample-10BT`, using the GPT-2 tokenizer from `tiktoken`.
 
-## Modelo publicado
+This repository contains the pipeline, code, and experiment metrics. Trained weights are distributed separately on the [Hugging Face Hub](https://huggingface.co/itlrc/gpt2-small), keeping large binary files out of the Git history.
 
-O checkpoint de inferência está disponível em [`itlrc/gpt2-small`](https://huggingface.co/itlrc/gpt2-small). O repositório do modelo contém os pesos em Safetensors FP32, a configuração da arquitetura e a integração personalizada com Transformers.
+## Published model
 
-| Recurso | Local |
+The inference checkpoint is available at [`itlrc/gpt2-small`](https://huggingface.co/itlrc/gpt2-small). The model repository contains FP32 Safetensors weights, the architecture configuration, and a custom Transformers integration.
+
+| Resource | Location |
 |---|---|
-| Código e pipeline de treinamento | Este repositório |
-| Pesos para inferência | [Hugging Face](https://huggingface.co/itlrc/gpt2-small) |
-| Dataset utilizado | [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) |
+| Code and training pipeline | This repository |
+| Inference weights | [Hugging Face](https://huggingface.co/itlrc/gpt2-small) |
+| Dataset used | [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) |
 
-## Resultados
+## Results
 
-O checkpoint publicado reúne 42 épocas lógicas de treinamento.
+The published checkpoint includes 42 logical training epochs.
 
-| Item | Resultado |
+| Item | Result |
 |---|---:|
-| Parâmetros | 124.439.808 |
-| Atualizações do otimizador | 10.500 |
-| Tokens processados | 5.505.024.000 |
-| Train loss | 3,3080 |
-| Validation loss | 3,2915 |
-| Validation perplexity | 26,88 |
+| Parameters | 124,439,808 |
+| Optimizer updates | 10,500 |
+| Tokens processed | 5,505,024,000 |
+| Train loss | 3.3080 |
+| Validation loss | 3.2915 |
+| Validation perplexity | 26.88 |
 
-![Curvas de treinamento](artifacts/training_curves.png)
+![Training curves](artifacts/training_curves.png)
 
-## Arquitetura
+## Architecture
 
-- 12 blocos Transformer;
-- 12 cabeças de atenção por bloco;
-- dimensão de embedding de 768;
-- contexto máximo de 1.024 tokens;
-- vocabulário de 50.257 tokens;
-- pesos compartilhados entre o embedding de tokens e a cabeça de linguagem;
-- atenção causal com `scaled_dot_product_attention` do PyTorch.
+- 12 Transformer blocks;
+- 12 attention heads per block;
+- embedding dimension of 768;
+- maximum context of 1,024 tokens;
+- vocabulary of 50,257 tokens;
+- weights shared between token embeddings and the language modeling head;
+- causal attention with PyTorch's `scaled_dot_product_attention`.
 
-## Configuração do treinamento
+## Training configuration
 
-- Dataset: `HuggingFaceFW/fineweb-edu`, configuração `sample-10BT`;
-- carregamento do corpus em streaming;
-- tokenizer GPT-2;
-- batch efetivo de 524.288 tokens por atualização;
-- 250 atualizações por época lógica;
-- AdamW com betas `(0.9, 0.95)` e weight decay de `0.1`;
-- gradient clipping em `1.0`;
-- warmup seguido de cosine decay;
-- validação em uma partição fixa de documentos reservados.
+- Dataset: `HuggingFaceFW/fineweb-edu`, `sample-10BT` configuration;
+- streaming corpus loading;
+- GPT-2 tokenizer;
+- effective batch of 524,288 tokens per update;
+- 250 updates per logical epoch;
+- AdamW with betas `(0.9, 0.95)` and weight decay of `0.1`;
+- gradient clipping at `1.0`;
+- warmup followed by cosine decay;
+- validation on a fixed partition of held-out documents.
 
-Como o dataset é consumido em streaming, “época” neste projeto significa um intervalo lógico de 250 atualizações, e não uma passagem completa por todo o corpus.
+Because the dataset is streamed, an "epoch" in this project means a logical interval of 250 updates rather than a full pass over the corpus.
 
-## Conteúdo do repositório
+## Repository contents
 
 ```text
 .
@@ -78,17 +80,17 @@ Como o dataset é consumido em streaming, “época” neste projeto significa u
 └── requirements.txt
 ```
 
-`notebooks/gpt2small.ipynb` documenta a configuração do treinamento efetivo. `notebooks/gpt2small_kaggle_quickstart.ipynb` é uma variante curta para validar o pipeline no Kaggle antes de iniciar uma execução longa. A implementação reutilizável da arquitetura está em `src/nano_gpt/model.py`, enquanto as métricas extraídas do treinamento estão em `artifacts/`.
+`notebooks/gpt2small.ipynb` documents the configuration used for the actual training run. `notebooks/gpt2small_kaggle_quickstart.ipynb` is a shorter variant for validating the pipeline on Kaggle before starting a long run. The reusable architecture implementation is in `src/nano_gpt/model.py`, and metrics extracted from training are in `artifacts/`.
 
-## Instalação
+## Installation
 
-Requer Python 3.10 ou mais recente e uma versão do PyTorch compatível com o hardware disponível.
+Requires Python 3.10 or newer and a PyTorch version compatible with the available hardware.
 
 ```bash
 python -m venv .venv
 ```
 
-Linux ou macOS:
+Linux or macOS:
 
 ```bash
 source .venv/bin/activate
@@ -104,36 +106,36 @@ python -m pip install --upgrade pip
 pip install -e ".[training]"
 ```
 
-Para carregar diretamente o modelo publicado no Hub, instale também a integração opcional:
+To load the published model directly from the Hub, also install the optional integration:
 
 ```bash
 pip install -e ".[hub]"
 ```
 
-## Executando o pipeline
+## Running the pipeline
 
-Para inspecionar a configuração que produziu o modelo publicado, abra `notebooks/gpt2small.ipynb`. Para um teste rápido no Kaggle, use `notebooks/gpt2small_kaggle_quickstart.ipynb`; essa variante usa apenas 5 épocas lógicas, 100 steps por época e limita temporariamente o HellaSwag a 100 exemplos.
+To inspect the configuration that produced the published model, open `notebooks/gpt2small.ipynb`. For a quick Kaggle test, use `notebooks/gpt2small_kaggle_quickstart.ipynb`; this variant uses only 5 logical epochs, 100 steps per epoch, and temporarily limits HellaSwag to 100 examples.
 
-Antes de iniciar um novo treinamento, ajuste no notebook escolhido:
+Before starting a new training run, adjust the following in the selected notebook:
 
-- o diretório dos checkpoints;
-- `B` de acordo com a memória da GPU;
-- `STEPS_PER_EPOCH` e `NUM_EPOCHS` para o orçamento de tokens desejado;
-- `VAL_STEPS` para o custo de validação aceitável.
+- the checkpoint directory;
+- `B` according to GPU memory;
+- `STEPS_PER_EPOCH` and `NUM_EPOCHS` for the desired token budget;
+- `VAL_STEPS` for an acceptable validation cost.
 
-O dataset é carregado diretamente do Hugging Face em streaming, portanto é necessário acesso à internet durante o treinamento.
+The dataset is streamed directly from Hugging Face, so internet access is required during training.
 
-## Métricas e gráficos
+## Metrics and plots
 
-O histórico completo por época está disponível em formatos JSON e CSV. Para gerar novamente as curvas a partir desses dados:
+The complete per-epoch history is available in JSON and CSV formats. To regenerate the curves from this data:
 
 ```bash
 python scripts/plot_history.py
 ```
 
-## Usando o modelo publicado
+## Using the published model
 
-Como a arquitetura foi implementada neste projeto, o carregamento pelo Transformers utiliza `trust_remote_code=True`:
+Because the architecture was implemented in this project, loading it through Transformers uses `trust_remote_code=True`:
 
 ```python
 import torch
@@ -161,6 +163,6 @@ with torch.inference_mode():
 print(tokenizer.decode(output[0], skip_special_tokens=True))
 ```
 
-`trust_remote_code=True` é necessário porque o Hub precisa carregar `configuration_nanogpt.py` e `modeling_nanogpt.py` junto com os pesos. Revise código remoto antes de habilitar essa opção em modelos de terceiros.
+`trust_remote_code=True` is required because the Hub needs to load `configuration_nanogpt.py` and `modeling_nanogpt.py` along with the weights. Review remote code before enabling this option for third-party models.
 
-Para checkpoints produzidos localmente pelo notebook, o comando `meu-gpt2-generate` continua disponível. O utilitário `scripts/export_checkpoint.py` separa pesos de inferência, configuração e histórico do checkpoint completo.
+For checkpoints produced locally by the notebook, the `meu-gpt2-generate` command remains available. The `scripts/export_checkpoint.py` utility separates inference weights, configuration, and history from the full checkpoint.
